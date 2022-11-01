@@ -23,7 +23,7 @@ def cleanup_eol(clean_str):
 
 def generate_testdata():
     test_dir_name = os.path.dirname(os.path.realpath(__file__))
-    for fn in glob.glob("%s/*.html" % test_dir_name):
+    for fn in glob.glob(f"{test_dir_name}/*.html"):
         module_args = {}
         cmdline_args = []
         func_args = {}
@@ -175,7 +175,7 @@ def test_module(fn, module_args):
         setattr(h, k, v)
 
     result = get_baseline(fn)
-    with open(fn) as inf:
+    with open(fn, encoding='utf-8') as inf:
         actual = cleanup_eol(inf.read())
         actual = h.handle(actual)
     assert result == actual
@@ -207,7 +207,7 @@ def test_command(fn, cmdline_args):
 
 @pytest.mark.parametrize("fn,func_args", generate_function_testdata())
 def test_function(fn, func_args):
-    with open(fn) as inf:
+    with open(fn, encoding='utf-8') as inf:
         actual = html2text.html2text(inf.read(), **func_args)
     result = get_baseline(fn)
     assert result == actual
